@@ -4,6 +4,8 @@
 
 基于参考论文设计了下图所示的 marker，并实现了角点识别任务。
 
+marker 宽 60mm，高 90mm。四个红色角点用来估计位姿，蓝框中的 4 个小方格作为 0/1 code 来标识 id。
+
 ![marker 图标](/Marker.png)
 
 |步骤(*)|函数|功能|
@@ -18,4 +20,10 @@
 |Substep3.1.4|findNextCorner()|根据当前 corner 的 width 参数搜索水平方向，找到一个符合要求的相邻角点|
 |Substep3.2|predictNextCorner()|在 1、2 角点的线方向上循环搜索角点|
 
-> subPixelLocation() 的准确性有待验证。
+> subPixelLocation() 的准确性有待验证。论文中的实现逻辑如下。
+
+设 c 为理想角点，p 是 c 的邻域中的某像素点，$g_p$ 为 p 点的图像梯度方向，则 $g_p^T (p-c)=0$
+
+$$\Rightarrow c= \{ c' | min \sum_{p\in N}(g_p^T (p-c'))^2 \}$$
+
+$$\Rightarrow c= ( \sum_{p\in N}g_p g_p^T)^{-1} ( \sum_{p\in N}g_p g_p^T p) $$
